@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FakeDetector AI</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #0a0a0a;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: white;
+            overflow-y: auto;
+        }
+
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #00ffff11, #000000 80%);
+            z-index: -2;
+        }
+
+        .machine {
+            position: fixed;
+            top: 50%;
+            width: 320px;
+            height: 320px;
+            border: 8px solid #00ffff;
+            border-radius: 50%;
+            transform: translateY(-50%);
+            animation: rotate 10s linear infinite;
+            box-shadow:
+                0 0 40px #00ffff,
+                0 0 80px #00ffff,
+                inset 0 0 40px #00ffff;
+            opacity: 0.6;
+            z-index: -1;
+        }
+
+        .left-machine {
+            left: -160px;
+        }
+
+        .right-machine {
+            right: -160px;
+            animation-direction: reverse;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: translateY(-50%) rotate(0deg);
+            }
+
+            to {
+                transform: translateY(-50%) rotate(360deg);
+            }
+        }
+
+        .main-content {
+            text-align: center;
+            padding-top: 60px;
+        }
+
+        .main-title {
+            font-size: 55px;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow:
+                0 0 5px #00ffff,
+                0 0 10px #00ffff,
+                0 0 20px #00ffff,
+                0 0 40px #00ffff;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            padding: 30px;
+            border-radius: 20px;
+            width: 420px;
+            margin: auto;
+            box-shadow:
+                0 0 20px rgba(0, 255, 255, 0.2),
+                0 0 40px rgba(0, 255, 255, 0.1);
+        }
+
+        textarea {
+            width: 100%;
+            height: 110px;
+            border-radius: 12px;
+            border: none;
+            padding: 12px;
+            resize: none;
+            outline: none;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 12px;
+            width: 100%;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #00ffff, #00ff99);
+            color: black;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 0 15px #00ffff;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px #00ffff;
+        }
+
+        .result {
+            margin-top: 25px;
+        }
+
+        .result h2 {
+            font-size: 26px;
+        }
+
+        .score {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #00ffff;
+        }
+
+        img {
+            margin-top: 20px;
+            width: 260px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px #00ffff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-animation"></div>
+
+    <div class="machine left-machine"></div>
+    <div class="machine right-machine"></div>
+
+    <div class="main-content">
+
+        <h1 class="main-title">Fake Review Detection System</h1>
+
+        <div class="card">
+
+            <form method="POST">
+
+                <textarea name="review" placeholder="Paste your review here..." required></textarea>
+
+                <button type="submit">
+                    Analyze Review
+                </button>
+
+            </form>
+
+            {% if result %}
+
+            <div class="result">
+
+                {% if result == "Genuine Review" %}
+                <h2 style="color:#00ff99;">
+                    {{ result }}
+                </h2>
+
+                {% else %}
+                <h2 style="color:#ff4d4d;">
+                    {{ result }}
+                </h2>
+                {% endif %}
+
+                <div class="score">
+                    Trust Score: {{ confidence }}%
+                </div>
+
+                {% if chart %}
+                <img src="data:image/png;base64,{{ chart }}" alt="Chart">
+                {% endif %}
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
